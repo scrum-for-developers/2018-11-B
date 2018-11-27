@@ -1,5 +1,7 @@
 package de.codecentric.psd.worblehat.domain;
 
+import org.hibernate.annotations.Type;
+
 import javax.annotation.Nonnull;
 
 import javax.persistence.*;
@@ -25,6 +27,8 @@ public class Book implements Serializable {
 	// TODO: convert String to an ISBN class, that ensures a valid ISBN
 	private String isbn;
 	private int yearOfPublication;
+	@Type(type="text")
+	private String description;
 
 	@OneToOne(mappedBy = "borrowedBook", orphanRemoval = true)
 	private Borrowing borrowing;
@@ -34,6 +38,20 @@ public class Book implements Serializable {
 	 */
 	private Book() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Book{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", author='" + author + '\'' +
+				", edition='" + edition + '\'' +
+				", isbn='" + isbn + '\'' +
+				", yearOfPublication=" + yearOfPublication +
+				", description='" + description + '\'' +
+				", borrowing=" + borrowing +
+				'}';
 	}
 
 	/**
@@ -62,6 +80,25 @@ public class Book implements Serializable {
 		this.isbn = isbn;
 		this.yearOfPublication = yearOfPublication;
 	}
+
+	public Book(@Nonnull String title,
+				@Nonnull String author,
+				@Nonnull String edition,
+				@Nonnull String isbn,
+				String description,
+				int yearOfPublication) {
+		super();
+		this.title = title;
+		this.author = author;
+		this.edition = edition;
+		this.isbn = isbn;
+		this.description = description;
+		this.yearOfPublication = yearOfPublication;
+	}
+
+	public String getDescription() { return description; }
+
+	public void setDescription(String description) { this.description = description; }
 
 	public String getTitle() {
 		return title;
@@ -117,14 +154,4 @@ public class Book implements Serializable {
         }
 	}
 
-	@Override
-	public String toString() {
-		return "Book{" +
-				"title='" + title + '\'' +
-				", author='" + author + '\'' +
-				", edition='" + edition + '\'' +
-				", isbn='" + isbn + '\'' +
-				", yearOfPublication=" + yearOfPublication +
-				'}';
-	}
 }
