@@ -70,7 +70,7 @@ public class StandardBookService implements BookService {
 									 @Nonnull String author,
 									 @Nonnull String edition,
 									 @Nonnull String isbn,
-									 @Nonnull String description,
+									 String description,
 									 int yearOfPublication) {
 		Book book = new Book(title, author, edition, isbn,description, yearOfPublication);
 
@@ -80,6 +80,11 @@ public class StandardBookService implements BookService {
             return Optional.of(bookRepository.save(book));
         } else
             return Optional.empty();
+	}
+
+	@Override
+	public Optional<Book> createBook(@Nonnull String title, @Nonnull String author, @Nonnull String edition, @Nonnull String isbn, int yearOfPublication) {
+		return this.createBook(title, author, edition, isbn, null, yearOfPublication);
 	}
 
 	@Override
