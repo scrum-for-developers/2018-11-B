@@ -30,5 +30,11 @@
 				Better validation messages.
 			</action>
 		</release>
+		<release version="1.2" date="2011-04-06"
+				 description="Changed Spring Boot version to 1.5.17">
+			<action dev="betaworblers" type="update">
+				Changed Spring Boot version to 1.5.17
+			</action>
+		</release>
 	</body>
 </document>
