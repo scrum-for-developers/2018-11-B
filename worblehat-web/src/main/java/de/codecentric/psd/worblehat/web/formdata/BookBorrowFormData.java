@@ -22,6 +22,7 @@ public class BookBorrowFormData {
 	}
 
 	public void setIsbn(String isbn) {
+		isbn = trimInput(isbn);
 		this.isbn = isbn;
 	}
 
@@ -30,7 +31,12 @@ public class BookBorrowFormData {
 	}
 
 	public void setEmail(String email) {
+		email = trimInput(email);
 		this.email = email;
+	}
+
+	private String trimInput(String inputToTrim) {
+		return inputToTrim.trim();
 	}
 
 }
