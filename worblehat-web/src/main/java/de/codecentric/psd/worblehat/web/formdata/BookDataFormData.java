@@ -49,6 +49,7 @@ public class BookDataFormData {
 	}
 
 	public void setIsbn(String isbn) {
+		isbn = isbn.trim();
 		this.isbn = isbn;
 	}
 
