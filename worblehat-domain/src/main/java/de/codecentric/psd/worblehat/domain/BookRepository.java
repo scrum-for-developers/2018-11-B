@@ -16,7 +16,13 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
     Optional<Book> findTopByIsbn(String isbn);
 
+    Optional<Book> findTopByIsbnAndEdition(String isbn, String edition);
+
     Set<Book> findByAuthor(String author);
 
     Set<Book> findByEdition(String edition);
+
+    Optional<Book> findTopByTitleAndYearOfPublicationAndEditionAndIsbn(String title, int yearOfPublication, String edition, String isbn);
+
+    Optional<Book> findTopByAuthorAndYearOfPublicationAndEditionAndIsbn(String author, int yearOfPublication, String edition, String isbn);
 }

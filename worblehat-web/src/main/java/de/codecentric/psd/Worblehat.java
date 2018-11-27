@@ -5,9 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 public class Worblehat {
+
+	private static final Logger logger = Logger.getLogger(Worblehat.class.getName());
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
@@ -15,7 +18,8 @@ public class Worblehat {
 
 		// this code is basically to (a) demonstrate how to stop a Spring application and (b)
 		// get rid of the SonarQube warning to close the context properly
-		System.out.println("Enter 'stop' to stop Worblehat.");
+		logger.info("Enter 'stop' to stop Worblehat.");
+
 		String line = "";
 		do {
 			line = scan.nextLine();
