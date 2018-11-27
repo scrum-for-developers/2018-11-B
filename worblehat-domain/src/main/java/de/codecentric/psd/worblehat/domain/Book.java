@@ -148,6 +148,10 @@ public class Book implements Serializable {
 		return getTitle().equals(book.title) && getAuthor().equals(book.author);
 	}
 
+	boolean isSameEdition(@Nonnull Book book) {
+		return getTitle().equals(book.title) && getAuthor().equals(book.author) && getEdition().equals(book.edition);
+	}
+
 	public void borrowNowByBorrower(String borrowerEmailAddress) {
 		if (borrowing == null) {
             this.borrowing = new Borrowing(this, borrowerEmailAddress);

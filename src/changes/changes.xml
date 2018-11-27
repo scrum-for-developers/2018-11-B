@@ -41,6 +41,7 @@
 				 description="Release with much improved functionality">
 			<action dev="betaworblers" type="update">
 				New description field for books.
+				Force new ISBN when adding existing edition.
 			</action>
 		</release>
 	</body>

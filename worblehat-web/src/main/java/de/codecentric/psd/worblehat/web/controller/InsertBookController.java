@@ -49,12 +49,12 @@ public class InsertBookController {
 					bookDataFormData.getEdition(), bookDataFormData.getIsbn(), bookDataFormData.getDescription(),
 					Integer.parseInt(bookDataFormData.getYearOfPublication()));
 			if (book.isPresent()) {
-			    LOG.info("new book instance is created: " + book.get());
-            } else {
-			    LOG.debug("failed to create new book with: "+bookDataFormData.toString());
-            }
+				LOG.info("new book instance is created: " + book.get());
+			} else {
+				LOG.debug("failed to create new book with: " + bookDataFormData.toString());
+				return "insertBooks";
+			}
 			return "redirect:bookList";
 		}
 	}
-
 }

@@ -72,8 +72,11 @@ public class StandardBookServiceTest {
 			bookCopies.get(book.getIsbn()).add(book);
 		}
 		for (Map.Entry<String, Set<Book>> entry : bookCopies.entrySet()) {
+			Book book = entry.getValue().iterator().next();
 			when(bookRepository.findByIsbn(entry.getKey())).thenReturn(entry.getValue());
 			when(bookRepository.findTopByIsbn(entry.getKey())).thenReturn(Optional.of(entry.getValue().iterator().next()));
+			when(bookRepository.findTopByAuthorAndYearOfPublicationAndEditionAndIsbn(book.getAuthor(), book.getYearOfPublication(), book.getEdition(), book.getIsbn())).thenReturn(Optional.of(book));
+			when(bookRepository.findTopByTitleAndYearOfPublicationAndEditionAndIsbn(book.getTitle(), book.getYearOfPublication(), book.getEdition(), book.getIsbn())).thenReturn(Optional.of(book));
 		}
 	}
 

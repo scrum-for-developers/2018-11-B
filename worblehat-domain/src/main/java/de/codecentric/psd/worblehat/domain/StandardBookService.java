@@ -74,12 +74,24 @@ public class StandardBookService implements BookService {
 									 int yearOfPublication) {
 		Book book = new Book(title, author, edition, isbn,description, yearOfPublication);
 
-		Optional<Book> bookFromRepo = bookRepository.findTopByIsbn(isbn);
+		if (bookRepository.findTopByTitleAndYearOfPublicationAndEditionAndIsbn(title, yearOfPublication, edition, isbn).isPresent()) {
+			return Optional.empty();
+		}
+		if (bookRepository.findTopByAuthorAndYearOfPublicationAndEditionAndIsbn(author, yearOfPublication, edition, isbn).isPresent()) {
+			return Optional.empty();
+		}
 
-        if (!bookFromRepo.isPresent() || book.isSameCopy(bookFromRepo.get())) {
-            return Optional.of(bookRepository.save(book));
-        } else
-            return Optional.empty();
+		Optional<Book> bookFromRepo = bookRepository.findTopByIsbnAndEdition(isbn, edition);
+
+		if (!bookFromRepo.isPresent()) {
+			return Optional.of(bookRepository.save(book));
+		} else if (book.isSameEdition(bookFromRepo.get())) {
+			return Optional.empty();
+		} else if (book.isSameCopy(bookFromRepo.get())) {
+			return Optional.of(bookRepository.save(book));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	@Override
@@ -93,6 +105,4 @@ public class StandardBookService implements BookService {
 		borrowingRepository.deleteAll();
 		bookRepository.deleteAll();
 	}
-
-
 }
