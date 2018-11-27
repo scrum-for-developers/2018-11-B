@@ -43,5 +43,11 @@
 				New description field for books.
 			</action>
 		</release>
+		<release version="1.4" date="2011-04-06"
+				 description="Release with much improved functionality">
+			<action dev="betaworblers" type="update">
+				- Added white space supports for isbn input during book creation
+			</action>
+		</release>
 	</body>
 </document>
