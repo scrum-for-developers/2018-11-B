@@ -72,26 +72,14 @@ public class StandardBookService implements BookService {
 									 @Nonnull String isbn,
 									 String description,
 									 int yearOfPublication) {
-		Book book = new Book(title, author, edition, isbn,description, yearOfPublication);
+		Book book = new Book(title, author, edition, isbn, description, yearOfPublication);
 
-		if (bookRepository.findTopByTitleAndYearOfPublicationAndEditionAndIsbn(title, yearOfPublication, edition, isbn).isPresent()) {
-			return Optional.empty();
-		}
-		if (bookRepository.findTopByAuthorAndYearOfPublicationAndEditionAndIsbn(author, yearOfPublication, edition, isbn).isPresent()) {
-			return Optional.empty();
-		}
+		Optional<Book> bookFromRepo = bookRepository.findTopByIsbn(isbn);
 
-		Optional<Book> bookFromRepo = bookRepository.findTopByIsbnAndEdition(isbn, edition);
-
-		if (!bookFromRepo.isPresent()) {
+		if (!bookFromRepo.isPresent() || book.isSameCopy(bookFromRepo.get())) {
 			return Optional.of(bookRepository.save(book));
-		} else if (book.isSameEdition(bookFromRepo.get())) {
+		} else
 			return Optional.empty();
-		} else if (book.isSameCopy(bookFromRepo.get())) {
-			return Optional.of(bookRepository.save(book));
-		} else {
-			return Optional.empty();
-		}
 	}
 
 	@Override

@@ -145,7 +145,7 @@ public class Book implements Serializable {
 	}
 
 	boolean isSameCopy(@Nonnull Book book) {
-		return getTitle().equals(book.title) && getAuthor().equals(book.author);
+		return getTitle().equals(book.title) && getAuthor().equals(book.author) && getEdition().equals(book.edition);
 	}
 
 	boolean isSameEdition(@Nonnull Book book) {

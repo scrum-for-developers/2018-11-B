@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import static com.github.npathai.hamcrestopt.OptionalMatchers.isEmpty;
 import static org.hamcrest.CoreMatchers.*;
@@ -75,8 +77,11 @@ public class StandardBookServiceTest {
 			Book book = entry.getValue().iterator().next();
 			when(bookRepository.findByIsbn(entry.getKey())).thenReturn(entry.getValue());
 			when(bookRepository.findTopByIsbn(entry.getKey())).thenReturn(Optional.of(entry.getValue().iterator().next()));
-			when(bookRepository.findTopByAuthorAndYearOfPublicationAndEditionAndIsbn(book.getAuthor(), book.getYearOfPublication(), book.getEdition(), book.getIsbn())).thenReturn(Optional.of(book));
-			when(bookRepository.findTopByTitleAndYearOfPublicationAndEditionAndIsbn(book.getTitle(), book.getYearOfPublication(), book.getEdition(), book.getIsbn())).thenReturn(Optional.of(book));
+			when(bookRepository.save(any(Book.class))).thenAnswer(new Answer() {
+				public Object answer(InvocationOnMock invocation) {
+					return invocation.getArguments()[0];
+				}
+			});
 		}
 	}
 
@@ -201,5 +206,21 @@ public class StandardBookServiceTest {
 		bookService.deleteAllBooks();
 		verify(bookRepository).deleteAll();
 		verify(borrowingRepository).deleteAll();
+	}
+
+	@Test
+	public void shouldAddSameCopy() {
+		givenALibraryWith(aBook);
+		bookService.createBook(aBook.getTitle(), aBook.getAuthor(), aBook.getEdition(),
+				aBook.getIsbn(),aBook.getDescription(), aBook.getYearOfPublication());
+		verify(bookRepository, times(1)).save(any(Book.class));
+	}
+
+	@Test
+	public void shouldRejectNewEditionWithSameIsbn() {
+		givenALibraryWith(aBook);
+		bookService.createBook(aBook.getTitle(), aBook.getAuthor(), "20000",
+				aBook.getIsbn(),aBook.getDescription(), aBook.getYearOfPublication());
+		verify(bookRepository, times(0)).save(any(Book.class));
 	}
 }
